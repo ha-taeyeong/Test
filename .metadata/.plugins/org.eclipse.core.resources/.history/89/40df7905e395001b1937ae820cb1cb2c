@@ -1,38 +1,55 @@
 package test;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Server {
 
 	public static void main(String[] args) {
-		
 		ServerSocket server = null;
 		Socket client = null;
 		BufferedReader br = null;
+		BufferedWriter bw = null;
+		Scanner sc = null;
 		
 		try {
 			server = new ServerSocket();
 			server.bind(new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), 1234));
 			client = server.accept();
 			InetSocketAddress isa = (InetSocketAddress)client.getRemoteSocketAddress();
-			System.out.println("클라이언트와 연결되었습니다. [" + isa.getHostString() + "]");
+			System.out.println("Connected Cliented");
 			
 			br = new BufferedReader(new InputStreamReader(client.getInputStream(), "UTF-8"));
+			bw = new BufferedWriter(new OutputStreamWriter(client.getOutputStream(), "UTF-8"));
+			sc = new Scanner(System.in);
 			
-			String fromClient = null;
-			fromClient = br.readLine();
-			System.out.println("클라이언트(127.0.0.1)로부터 " + fromClient + " 데이터를 받았습니다.");
-			
+			while(true) {
+				String fromClient = null;
+				fromClient = br.readLine();
+				if(fromClient == null) {
+					System.out.println("Disconnected By Client.");
+					break;
+				}
+				System.out.println("클라이언트(127.0.0.1)로부터" + fromClient + "데이터를 받았습니다.");
+				
+				System.out.print("클라이언트에게 전송할 메시지를 입력하세요 >>> ");
+				String toClient = sc.nextLine();
+				bw.write(toClient + "\n");
+				bw.flush();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
 				if(br != null) { br.close(); }
+				if(bw != null) { bw.close(); }
 				if(!server.isClosed()) { server.close(); }
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -20,14 +20,14 @@ public class Server {
 			server.bind(new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), 1234));
 			client = server.accept();
 			InetSocketAddress isa = (InetSocketAddress)client.getRemoteSocketAddress();
-			System.out.println("클라이언트와 연결되었습니다. [" + isa.getHostString() + "]");
+			System.out.println("Connected Cliented : [" + isa.getHostString() + "]");
 			
 			br = new BufferedReader(new InputStreamReader(client.getInputStream(), "UTF-8"));
 			
 			String fromClient = null;
 			fromClient = br.readLine();
-			System.out.println("클라이언트(127.0.0.1)로부터 " + fromClient + " 데이터를 받았습니다.");
-			
+
+			System.out.println("클라이언트(127.0.0.1)로부터" + fromClient + "데이터를 받았습니다.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

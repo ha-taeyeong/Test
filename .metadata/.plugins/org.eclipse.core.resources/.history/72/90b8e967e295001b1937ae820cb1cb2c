@@ -19,13 +19,11 @@ public class Client {
 			client = new Socket();
 			client.connect(new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), 1234));
 			bw = new BufferedWriter(new OutputStreamWriter(client.getOutputStream(), "UTF-8"));
-			sc = new Scanner(System.in);
-			
 			System.out.print("서버에게 전송할 메시지를 입력하세요 >>> ");
 			String toServer = sc.nextLine();
 			bw.write(toServer + "\n");
 			bw.flush();
-			System.out.println("서버(127.0.0.1)로  " + toServer + " 데이터를 전송했습니다.");
+			System.out.println("서버(127.0.0.1)로 " + toServer + "데이터를 전송했습니다.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
